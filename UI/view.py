@@ -36,10 +36,28 @@ class View:
         self.txt_titolo = ft.Text(value="Musei di Torino", size=38, weight=ft.FontWeight.BOLD)
 
         # --- Sezione 2: Filtraggio ---
-        # TODO
+        # creo dropdown sia per i musei sia per le epoche
+        self._dd_museo = ft.Dropdown(label="Museo",
+                                     options = [],
+                                     width=500,
+                                     padding = True,
+                                     on_change = self.controller.handler_musei_change
+                                     )
+        self.controller.handler_popola_musei()
+
+        self._dd_epoche = ft.Dropdown(label="Epoca",
+                                     options= [],
+                                     width=200,
+                                     padding = True,
+                                      on_change=self.controller.handler_epoca_change)
+        self.controller.handler_popola_epoca()
 
         # Sezione 3: Artefatti
-        # TODO
+        # creo la listview e il bottone da schiacciare per mostrare gli artefatti filtrati
+        self._artefatti = ft.ListView(expand = False, spacing = 10,padding = 20, auto_scroll=True)
+        btn_mostra_artefatti=ft.ElevatedButton(text="Mostra Artefatti",
+                                               width=200,
+                                               on_click=self.controller.handler_mostra_artefatti)
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)
@@ -53,10 +71,16 @@ class View:
             ft.Divider(),
 
             # Sezione 2: Filtraggio
-            # TODO
+            ft.Row(controls = [self._dd_museo,self._dd_epoche],
+                   alignment=ft.MainAxisAlignment.CENTER),
+            ft.Divider(),
 
             # Sezione 3: Artefatti
-            # TODO
+            ft.Row(controls = [btn_mostra_artefatti],
+                   alignment = ft.MainAxisAlignment.CENTER),
+            ft.Divider(color = "black"),
+            self._artefatti,
+            ft.Divider(color = "black")
         )
 
         self.page.scroll = "adaptive"
